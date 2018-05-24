@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <meta http-equiv="content-type" content="text/html">
+        <meta charset="utf-8">
+        <title>New Zombie York</title>
+        <link type="text/css" rel="stylesheet" href="css/index.css">
+    </head>
+
+    <body>
+        <audio id="musica" src="music/thriller.mp3" loop></audio>
+        <canvas id="canvas" autofoscus></canvas>
+
+        <div class="tiempos">
+            <div class="cronometro">
+                <div class="reloj" id="Horas">00</div>
+                <div class="reloj" id="Minutos">:00</div>
+                <div class="reloj" id="Segundos">:00</div>
+                <div class="reloj" id="Centesimas">:00</div>
+            </div>
+            <h2 id="record" class="record">best: <span id="valorRecord" class="valorRecord"><span class="relojRecord" id="HorasRecord">00</span><span class="relojRecord" id="MinutosRecord">:00</span><span class="relojRecord" id="SegundosRecord">:00</span><span class="relojRecord" id="CentesimasRecord">:00</span></span></h2>
+        </div>
+
+
+        <div class="informacion">
+            <div class="monedero">
+                <img src="images/coin.gif" class="iconoMoneda">
+                <h5 id="cantidadMonedas" class="cantidadMonedas">0</h5>
+            </div>
+
+            <div class="estadisticas">
+                <h2 id="velocidad" class="tituloPropiedad">Velocidad: <span id="valorVelocidad" class="propiedad">0</span> Km/h</h2>
+                <h2 id="obstaculosPasados" class="tituloPropiedad">Obstaculos: <span id="valorObstaculos" class="propiedad">0</span></h2>
+            </div>
+        </div>
+
+
+        <div id="menu" class="menu">
+            <button class="iniciador" onclick="game.init()" value="Iniciar">Start</button>
+        </div>
+
+        <script src="js/harnina.js"></script>
+        <script src="js/newZombieYork.js"></script>
+    </body>
+
+</html>

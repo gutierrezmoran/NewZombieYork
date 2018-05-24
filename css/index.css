@@ -1,0 +1,138 @@
+html, body {
+    width: 100%;
+    margin: 0;
+    font-size: 16px;
+}
+
+body {
+    background-color: rgb(84, 73, 105);
+    background-image: url(../images/estrellas.png);
+    background-size: cover;
+}
+
+canvas {
+    display: block;
+}
+
+.tiempos {
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: 10px;
+    background: rgba(0, 0, 0, .2);
+}
+
+.tiempos > * {
+    margin: 1px 0;
+    font-family: Courier, sans-serif;
+    color: white;
+}
+
+.cronometro {
+    display: flex;
+}
+
+.reloj{
+	float: left;
+	font-size: 2em;
+	font-family: Courier, sans-serif;
+}
+
+.record {
+    font-weight: 100;
+    font-size: 1em;
+}
+
+.relojRecord {
+    font-size: 1em;
+    font-family: Courier, sans-serif;
+    font-weight: 100;
+}
+
+.informacion {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    display: flex;
+}
+
+.monedero {
+    padding: 20px;
+    display: flex;
+}
+
+.monedero * {
+    margin: 0 5px;
+}
+
+.temporizador {
+    font-weight: bold;
+    font-size: 4em;
+}
+
+.estadisticas {
+    display: flex;
+    align-items: center;
+}
+
+.estadisticas > * {
+    margin: 0 15px;
+}
+
+.tituloPropiedad {
+    font-size: 1.1em;
+    font-family: sans-serif;
+    font-weight: bold;
+    color: white;
+}
+
+.propiedad {
+    font-weight: 100;
+    font-size: 1em;
+    font-family: sans-serif;
+    color: white;
+}
+
+.iniciador {
+    width: 85%;
+    padding: 10px;
+    border: 3px solid rgba(255, 255, 255, .3);
+    font-size: 2em;
+    font-family: sans-serif;
+    color: white;
+    background-color: rgba(255, 255, 255, .1);
+    margin: 10% 0 0;
+    transition: .1s ease-in background-color;
+}
+
+.iniciador:hover {
+    cursor: pointer;
+    background-color: rgba(255, 255, 255, .4);
+}
+
+.menu {
+    position: absolute;
+    top: 0;
+    left: 0;
+    min-width: 100%;
+    min-height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.monedero {
+    display: flex;
+    align-items: center;
+}
+
+.iconoMoneda {
+    width: 40px;
+}
+
+.cantidadMonedas {
+    margin: 0 10px;
+    font-size: 2em;
+    color: white;
+    font-family: sans-serif;
+}
