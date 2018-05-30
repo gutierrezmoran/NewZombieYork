@@ -2,15 +2,31 @@ html, body {
     width: 100%;
     margin: 0;
     font-size: 16px;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -o-user-select: none;
+    -ms-user-select: none;
 }
 
 body {
+    width: 100%;
+    height: 100vh;
     background-color: rgb(84, 73, 105);
     background-image: url(../images/estrellas.png);
     background-size: cover;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-width: 800px;
+    min-width: 500px;
 }
 
 canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
     display: block;
 }
 
@@ -135,4 +151,89 @@ canvas {
     font-size: 2em;
     color: white;
     font-family: sans-serif;
+}
+
+.modal {
+    display: none;
+    padding: 50px;
+    background-color: rgba(66, 58, 81, .8);
+    border-radius: 20px;
+}
+
+.modalTitulo {
+    font-family: sans-serif;
+    font-weight: bold;
+    color: rgba(218, 59, 63, 1);
+    font-size: 5em;
+    letter-spacing: 1px;
+    text-align: center;
+}
+
+.botonModal {
+    padding: 10px;
+    margin: 5px 0;
+    text-align: center;
+    font-family: sans-serif;
+    font-weight: bold;
+    font-size: 2em;
+    transition: .08s linear all;
+    background-color: rgba(255, 255, 255, .7);
+    border: none;
+    cursor: pointer;
+    width: 250px;
+}
+
+.botonModal:hover {
+    background-color: rgba(255, 255, 255, 1);
+}
+
+.botonInstrucciones {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    padding: 10px;
+    color: white;
+    background-color: rgba(0,0,0,.5);
+    text-align: center;
+    font-size: 1.1em;
+    font-family: sans-serif;
+    margin: 0;
+    cursor: pointer;
+    transition: .1s linear background-color;
+}
+
+.botonInstrucciones:hover {
+    background-color: rgba(0, 0, 0, 1);
+}
+
+.cajaInstrucciones {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    margin: 0;
+    width: 250px;
+    font-family: sans-serif;
+    background-color: white;
+    border: 1px solid #333;
+    display: none;
+}
+
+.cajaInstrucciones span {
+    display: block;
+    text-align: right;
+    font-weight: bold;
+    padding: 5px;
+    transition: .1s linear all;
+    background-color: rgba(255, 0, 0, .1);
+}
+
+.cajaInstrucciones span:hover {
+    background-color: darkred;
+    color: white;
+}
+
+.cajaInstrucciones p {
+    text-align: justify;
+    padding: 10px;
+    font-weight: bold;
 }

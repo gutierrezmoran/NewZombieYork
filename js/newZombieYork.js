@@ -1,7 +1,7 @@
 var game = (function() {
 
     // Variables globales.
-    var window = this.window, document = this.document, canvas, ctx, buffer, bufferCtx, background, keyboard, zombie, obstacles = [], coins = [], nodoMusica, record, nodoVelocidad, nodoObstaculos, nodoCoin, nodoCentesimas, nodoSegundos, nodoMinutos, nodoHoras, nodoCentesimasRecord, nodoSegundosRecord, nodoMinutosRecord, nodoHorasRecord, speed, speedPlayer, pass, coin, centesimas = 0, segundos = 0, minutos = 0, horas = 0, intervalCronometro;
+    var window = this.window, document = this.document, canvas, ctx, buffer, bufferCtx, background, keyboard, zombie, obstacles = [], coins = [], nodoMusica, record, nodoVelocidad, nodoObstaculos, nodoCoin, nodoCentesimas, nodoSegundos, nodoMinutos, nodoHoras, nodoCentesimasRecord, nodoSegundosRecord, nodoMinutosRecord, nodoHorasRecord, speed, speedPlayer, pass, coin, centesimas = 0, segundos = 0, minutos = 0, horas = 0, intervalCronometro, intervalSpeed, detenerAnim = false, objectGenerator, nodoModal, nodoReiniciarPartida, nodoIrMenu, nodoBotonInstrucciones, nodoInstrucciones, nodoCerrarInstrucciones;
 
     // Almacena los nodos en variables (es llamada antes del retorno de game).
     function getNodes() {
@@ -17,6 +17,12 @@ var game = (function() {
         nodoSegundosRecord = document.getElementById("SegundosRecord");
         nodoMinutosRecord = document.getElementById("MinutosRecord");
         nodoHorasRecord = document.getElementById("HorasRecord");
+        nodoModal = document.getElementById("modal");
+        nodoReiniciarPartida = document.getElementById("botonReiniciar");
+        nodoIrMenu = document.getElementById("botonIrMenu");
+        nodoBotonInstrucciones = document.getElementById("instrucciones");
+        nodoInstrucciones = document.getElementById("cajaInstrucciones");
+        nodoCerrarInstrucciones = document.getElementById("cerrarInstrucciones");
     }
 
     /*
@@ -225,15 +231,23 @@ var game = (function() {
     /*
     *   Funciones encargadas de iniciar, reiniciar y actualizar la velocidad del juego.
     */
-    function initSpeed() {
-        speed = 5;
-        speedPlayer = speed;
+    function resumeSpeed() {
         var increment = .5;
 
-        window.setInterval(function() {
+        intervalSpeed = window.setInterval(function() {
             speed += increment;
             speedPlayer = speed;
         }, 10000);
+    }
+
+    function initSpeed() {
+        speed = 5;
+        speedPlayer = speed;
+        resumeSpeed();
+    }
+
+    function stopSpeed() {
+        window.clearInterval(intervalSpeed);
     }
 
     function resetSpeed() {
@@ -250,11 +264,11 @@ var game = (function() {
     }
 
     /*
-    *   Elimina el nodo menu que es el encargado de lanzar el juego por primera vez.
+    *   Oculta el nodo encargado de iniciar la partida.
     */
-    function deleteMenu() {
-        var menu = document.getElementById("menu");
-        menu.parentElement.removeChild(menu);
+    function hideIniciador() {
+        var iniciador = document.getElementById("iniciador");
+        iniciador.style.display = "none";
     }
 
     /*
@@ -272,12 +286,49 @@ var game = (function() {
         coin++;
     }
 
+    function startObjectGenerator() {
+        objectGenerator = window.setInterval(function(){
+
+            var middle = canvas.height / 2  + ((Math.random() - 0.5) * canvas.height * 3 / 4);
+
+            var heightObstacleDown = canvas.height - middle - 100;
+
+            obstacles.push(new Obstacle(heightObstacleDown));
+
+            var heightObstacleUp = canvas.height - heightObstacleDown - ((Math.random() * 150) + 190);
+
+            obstacles.push(new Obstacle(heightObstacleUp, true));
+
+            var heightCoin = heightObstacleDown + 50;
+
+            coins.push(new Coin(heightCoin));
+
+        }, 1500);
+    }
+
+    function stopObjectGenerator() {
+        window.clearInterval(objectGenerator);
+    }
+
+    function showModal() {
+        nodoModal.style.display = "block";
+    }
+
+    function hideModal() {
+        nodoModal.style.display = "none";
+    }
+
+    function reloadPage() {
+        window.location.reload();
+    }
+
     /*
     *   Esta función llama a diferentes funciones que aportan un estado inicial a la partida.
     *   (es llamada desde init).
     */
     function startInitialState() {
-        deleteMenu();
+        hideIniciador();
+        detenerAnim = false;
         playAudio();
         initSpeed();
         initPass();
@@ -285,6 +336,7 @@ var game = (function() {
         initRecord();
         initChronometer();
         updateSpeed();
+        hideModal();
     }
 
     /*
@@ -297,7 +349,6 @@ var game = (function() {
         initCoin();
         updateCoin();
         resetChronometer();
-        initChronometer();
         initRecord();
     }
 
@@ -305,10 +356,12 @@ var game = (function() {
     function resizeCanvas () {
         var scaleCanvas = 1;
 
-        canvas.width = window.innerWidth * scaleCanvas;
-        canvas.height = window.innerHeight * scaleCanvas;
-        buffer.width = canvas.width;
-        buffer.height = canvas.height;
+        if(!detenerAnim) {
+            canvas.width = window.innerWidth * scaleCanvas;
+            canvas.height = window.innerHeight * scaleCanvas;
+            buffer.width = canvas.width;
+            buffer.height = canvas.height;
+        }
     }
 
     /**
@@ -681,11 +734,11 @@ var game = (function() {
 
     function checkCollisions(point, obstacle) {
         if(inside(point, obstacle)) {
-            resetKeyboard();
-            resetObstacles();
-            resetCoins();
-            window.alert('Has Perdido');
-            resetInitialState();
+            detenerAnim = true;
+            stopObjectGenerator();
+            stopSpeed();
+            stopChronometer();
+            showModal();
             return true;
         }
     }
@@ -777,7 +830,7 @@ var game = (function() {
         draw();
     }
 
-    function init () {
+    function init() {
         startInitialState();
 
         // Canvas & Buffering
@@ -790,6 +843,9 @@ var game = (function() {
         // Gameloop
         var anim = function () {
             update();
+            if (detenerAnim) {
+                return;
+            }
             window.requestAnimFrame(anim);
         };
 
@@ -799,30 +855,34 @@ var game = (function() {
         zombie = Player();
         background = BackgroundSystem(anim);
         window.addListener(window, 'resize', resizeCanvas);
-        window.setInterval(function(){
-
-            var middle = canvas.height / 2  + ((Math.random() - 0.5) * canvas.height * 3 / 4);
-
-            var heightObstacleDown = canvas.height - middle - 100;
-
-            obstacles.push(new Obstacle(heightObstacleDown));
-
-            var heightObstacleUp = canvas.height - heightObstacleDown - ((Math.random() * 150) + 190);
-
-            obstacles.push(new Obstacle(heightObstacleUp, true));
-
-            var heightCoin = heightObstacleDown + 50;
-
-            coins.push(new Coin(heightCoin));
-
-        }, 1500);
+        startObjectGenerator();
     }
 
     getNodes();
 
+    nodoReiniciarPartida.onclick = function() {
+        resetKeyboard();
+        resetObstacles();
+        resetCoins();
+        resetInitialState();
+        init();
+    }
+    nodoIrMenu.onclick = function() {
+        reloadPage();
+    }
+
+    nodoBotonInstrucciones.onclick = function() {
+        nodoInstrucciones.style.display = "block";
+    }
+
+    nodoCerrarInstrucciones.onclick = function() {
+        nodoInstrucciones.style.display = "none";
+    }
+
     // Public Methods API
     return {
-        init: init
+        init: init,
+        updateRecordNode: updateRecordNode
     };
 
 }) ();

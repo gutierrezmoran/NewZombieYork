@@ -8,8 +8,9 @@
         <link type="text/css" rel="stylesheet" href="css/index.css">
     </head>
 
-    <body>
+    <body onload="game.updateRecordNode()">
         <audio id="musica" src="music/thriller.mp3" loop></audio>
+
         <canvas id="canvas" autofoscus></canvas>
 
         <div class="tiempos">
@@ -35,9 +36,20 @@
             </div>
         </div>
 
-
         <div id="menu" class="menu">
-            <button class="iniciador" onclick="game.init()" value="Iniciar">Start</button>
+            <button id="iniciador" class="iniciador" onclick="game.init()" value="Iniciar">Start</button>
+
+            <div id="modal" class="modal">
+                <p class="modalTitulo">Game Over</p>
+                <button id="botonReiniciar" class="botonModal">Reiniciar</button>
+                <button id="botonIrMenu" class="botonModal">Menú</button>
+            </div>
+        </div>
+
+        <p class="botonInstrucciones" id="instrucciones">Instrucciones</p>
+        <div id="cajaInstrucciones" class="cajaInstrucciones">
+            <span id="cerrarInstrucciones">X</span>
+            <p>La regla principal de este videojuego solo puede ser interpretada por expertos ingenieros del MIT. La regla de oro es básica: no te choques con los obstáculos.</p>
         </div>
 
         <script src="js/harnina.js"></script>
